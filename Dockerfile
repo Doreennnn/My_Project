@@ -1,9 +1,11 @@
 FROM php:8.2-apache
 
 RUN apt-get update && apt-get install -y \
-    git unzip libzip-dev \
-  && docker-php-ext-install pdo pdo_mysql pdo_sqlite sqlite3 zip \
- && a2enmod rewrite
+    git unzip libzip-dev libsqlite3-dev \
+  && docker-php-ext-install pdo_mysql pdo_sqlite zip \
+  && a2enmod rewrite \
+  && rm -rf /var/lib/apt/lists/*
+
 RUN sed -i 's/AllowOverride None/AllowOverride All/g' /etc/apache2/apache2.conf
 
 
