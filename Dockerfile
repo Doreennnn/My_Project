@@ -19,5 +19,13 @@ RUN sed -i 's|/var/www/html|/var/www/html/public|g' /etc/apache2/sites-available
 
 RUN chown -R www-data:www-data storage bootstrap/cache
 
+RUN mkdir -p database \
+ && touch database/database.sqlite \
+ && chmod -R 775 storage bootstrap/cache database \
+ && php artisan migrate --force \
+ && php artisan db:seed \
+ && php artisan optimize:clear
+
+
 EXPOSE 80
 CMD ["apache2-foreground"]
