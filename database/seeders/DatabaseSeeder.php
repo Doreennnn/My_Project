@@ -15,11 +15,13 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // Create admin user
-        User::create([
-            'name' => 'Admin',
-            'email' => 'admin@restaurant.com',
-            'password' => bcrypt('password'),
-        ]);
+        // Create or update admin user (avoid duplicate email)
+        User::updateOrCreate(
+            ['email' => 'admin@restaurant.com'],
+            [
+                'name' => 'Admin',
+                'password' => bcrypt('password'),
+            ]
+        );
     }
 }
